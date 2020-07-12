@@ -1,5 +1,7 @@
 {
   "name": "massoterapia-admin",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
