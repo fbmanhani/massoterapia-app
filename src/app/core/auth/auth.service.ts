@@ -21,10 +21,10 @@ export class AuthService extends BaseService<any, number>{
   }
 
   login(user: User): any {
-    return this.post(JSON.stringify(user), '/login').pipe(
+    return this.post(JSON.stringify(user), '/login').lift(
       tap(async (res: any) => {
-        if (res.user) {
-          await this.storage.set('token', res.user.access_token);
+        if (res) {
+          await this.storage.set('token', res.accessToken).then(() => console.log('token set'));
           this.authSubject.next(true);
         }
       })
