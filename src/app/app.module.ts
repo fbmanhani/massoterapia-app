@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthModule } from './core/auth/auth.module';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
+import { IonicStorageModule } from '@ionic/storage';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { AuthInterceptor } from './core/auth/auth.interceptor';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
+    IonicStorageModule.forRoot(),
     AppRoutingModule,
     AuthModule
   ],

@@ -15,7 +15,6 @@ export class AuthGuardService implements CanActivate, CanActivateChild {
   async canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean> {
-    const url = next.url[0].path;
     if (await this.authService.isLoggedIn()) {
       return true;
     } else {

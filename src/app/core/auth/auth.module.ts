@@ -11,8 +11,7 @@ import { IonicStorageModule } from '@ionic/storage';
   imports: [
     CommonModule,
     HttpClientModule,
-    FormsModule,
-    IonicStorageModule.forRoot()
+    FormsModule
   ]
 })
 export class AuthModule { }

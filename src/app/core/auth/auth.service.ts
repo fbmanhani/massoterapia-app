@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Storage } from '@ionic/storage';
 import { User } from './user';
-import { AuthResponse } from './auth-response';
-import { environment } from 'src/environments/environment';
 import { BaseService } from '../services/base.service';
 
 @Injectable({
@@ -15,16 +13,18 @@ import { BaseService } from '../services/base.service';
 export class AuthService extends BaseService<any, number>{
 
   authSubject = new BehaviorSubject(false);
+  showMenu = false;
 
   constructor(http: HttpClient, private storage: Storage) {
     super('auth', http);
   }
 
-  login(user: User): any {
-    return this.post(JSON.stringify(user), '/login').lift(
+  login(user: User): Observable<any> {
+    return this.post(user, '/login').pipe(
       tap(async (res: any) => {
         if (res) {
           await this.storage.set('token', res.accessToken).then(() => console.log('token set'));
+          this.showMenu = true;
           this.authSubject.next(true);
         }
       })

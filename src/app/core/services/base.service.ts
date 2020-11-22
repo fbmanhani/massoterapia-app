@@ -13,7 +13,6 @@ export class BaseService<T, ID> extends CrudService<T, ID> {
   }
 
   post(t: T, complementUrl?: string, options?: { headers: HttpHeaders }) {
-
     return this.http.post(this.base + this.getComplementUrl(complementUrl), t, options ? options : this.options)
       .pipe(
         map(this.extractData),
