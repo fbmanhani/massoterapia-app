@@ -1,0 +1,24 @@
+<ion-content padding>
+  <form (ngSubmit)="login()" [formGroup]="credentials">
+    <div class="input-group">
+
+      <ion-item>
+        <ion-input type="username" placeholder="Usuário" formControlName="username"></ion-input>
+      </ion-item>
+      <div *ngIf="(username.dirty || username.touched) && username.errors" class="errors">
+        <span *ngIf="username.errors?.required">O usuário é obrigatório</span>
+      </div>
+
+      <ion-item>
+        <ion-input type="password" placeholder="Senha" formControlName="password"></ion-input>
+      </ion-item>
+      <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
+        <span *ngIf="password.errors?.required">A senha é obrigatória</span>
+        <span *ngIf="password.errors?.minlength">A senha precisa ter ao menos 6 caracteres</span>
+      </div>
+    </div>
+    <div>
+      <ion-button type="submit" expand="block" [disabled]="!credentials.valid">Log in</ion-button>
+    </div>
+  </form>
+</ion-content>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { AuthService } from './core/auth/auth.service';
+import { Platform } from '@ionic/angular';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',

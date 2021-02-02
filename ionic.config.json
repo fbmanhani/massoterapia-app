@@ -1,7 +1,7 @@
 {
   "name": "massoterapia-admin",
   "integrations": {
-    "cordova": {}
+    "capacitor": {}
   },
   "type": "angular"
 }
