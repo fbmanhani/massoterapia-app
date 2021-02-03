@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CanLoad, Router } from '@angular/router';
-import { MenuController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
@@ -8,22 +7,20 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanLoad {
-  constructor(private authService: AuthService, private router: Router, private menuCtrl: MenuController) {}
+export class AutoLoginGuard implements CanLoad {
+  constructor(private authService: AuthService, private router: Router) {}
 
   canLoad(): Observable<boolean> {
     return this.authService.isAuthenticated.pipe(
-      filter((val) => val !== null),
-      take(1),
+      filter((val) => val !== null), // Filter out initial Behaviour subject value
+      take(1), // Otherwise the Observable doesn't complete!
       map((isAuthenticated) => {
-        console.log('GUARD: ', isAuthenticated);
         if (isAuthenticated) {
-          this.menuCtrl.enable(true);
-          return true;
+          // Directly open inside area
+          this.router.navigateByUrl('/home', { replaceUrl: true });
         } else {
-          this.menuCtrl.enable(false);
-          this.router.navigateByUrl('/login');
-          return false;
+          // Simply allow access to the login
+          return true;
         }
       })
     );
