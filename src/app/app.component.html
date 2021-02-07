@@ -15,11 +15,9 @@
         </ion-list>
 
         <ion-list id="labels-list">
-          <ion-list-header>Labels</ion-list-header>
-
-          <ion-item *ngFor="let label of labels" lines="none">
-            <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-            <ion-label>{{ label }}</ion-label>
+          <ion-item lines="none" (click)="selectedIndex = i;logout();" detail="false" [class.selected]="selectedIndex == i">
+            <ion-icon slot="start" ios="log-out-outline" md="log-out-sharp"></ion-icon>
+            <ion-label>Sair</ion-label>
           </ion-item>
         </ion-list>
       </ion-content>

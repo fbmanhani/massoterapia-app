@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Unidades</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let unit of units">
+      <ion-item>
+        <ion-label>{{unit.descricao}}</ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option (click)="edit(unit)">Editar</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-grid *ngIf="units?.length == 0">
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center ion-padding-top">
+          <span>Não há unidades
+            cadastradas</span>
+          </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add" (click)="add()"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

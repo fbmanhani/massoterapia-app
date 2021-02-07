@@ -19,6 +19,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/home/home.module').then((m) => m.HomePageModule),
     canLoad: [AuthGuard],
   },
+  {
+    path: 'parameters',
+    loadChildren: () => import('./pages/parameters/parameters.module').then((m) => m.ParametersPageModule),
+  },
+  {
+    path: 'units',
+    loadChildren: () => import('./pages/units/units.module').then((m) => m.UnitsPageModule),
+  },
 ];
 
 @NgModule({

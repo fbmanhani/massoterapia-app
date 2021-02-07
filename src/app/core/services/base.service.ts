@@ -9,7 +9,7 @@ export class BaseService<T, ID> extends CrudService<T, ID> {
   }
 
   get(complementUrl?: string, options?: { headers: HttpHeaders }) {
-    return this.http.get(this.base + this.getComplementUrl(complementUrl), options);
+    return this.http.get<T>(this.base + this.getComplementUrl(complementUrl), options);
   }
 
   post(t: T, complementUrl?: string, options?: { headers: HttpHeaders }) {

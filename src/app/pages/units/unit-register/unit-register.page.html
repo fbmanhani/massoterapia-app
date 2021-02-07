@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{isEdit? 'Editar' : 'Cadastrar' }} Unidade</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <ion-item lines="full">
+      <ion-label position="floating">Descrição</ion-label>
+      <ion-input formControlName="descricao" type="text"></ion-input>
+    </ion-item>
+    <div *ngIf="(descricao.dirty || descricao.touched) && descricao.errors" class="errors">
+      <span *ngIf="descricao.errors?.required">A descrição é obrigatória</span>
+      <span *ngIf="descricao.errors?.maxlength">O campo pode ter no máximo 100 caracteres</span>
+    </div>
+
+
+    <ion-item lines="full">
+      <ion-label position="floating">Número de Posições</ion-label>
+      <ion-input formControlName="posicoes" type="number" max="999999" maxlength="6"></ion-input>
+    </ion-item>
+    <div *ngIf="(posicoes.dirty || posicoes.touched) && posicoes.errors" class="errors">
+      <span *ngIf="posicoes.errors?.required">O número de posições é obrigatório</span>
+      <span *ngIf="posicoes.errors?.maxlength">O campo pode ter no máximo 6 caracteres</span>
+    </div>
+
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" expand="block" >Salvar</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+</ion-content>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform } from '@ionic/angular';
@@ -14,35 +15,25 @@ export class AppComponent implements OnInit {
   public selectedIndex = 0;
   public appPages = [
     {
-      title: 'Inbox',
-      url: '/folder/Inbox',
-      icon: 'mail',
+      title: 'Início',
+      url: '/home',
+      icon: 'home',
     },
     {
-      title: 'Outbox',
-      url: '/folder/Outbox',
-      icon: 'paper-plane',
+      title: 'Unidades',
+      url: '/units',
+      icon: 'business',
     },
     {
-      title: 'Favorites',
-      url: '/folder/Favorites',
-      icon: 'heart',
+      title: 'Posições',
+      url: '/parameters',
+      icon: 'body',
     },
     {
-      title: 'Archived',
-      url: '/folder/Archived',
-      icon: 'archive',
-    },
-    {
-      title: 'Trash',
-      url: '/folder/Trash',
-      icon: 'trash',
-    },
-    {
-      title: 'Spam',
-      url: '/folder/Spam',
-      icon: 'warning',
-    },
+      title: 'Relatórios',
+      url: '/report',
+      icon: 'stats-chart',
+    }
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
@@ -50,7 +41,8 @@ export class AppComponent implements OnInit {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.initializeApp();
   }
@@ -73,5 +65,6 @@ export class AppComponent implements OnInit {
 
   async logout() {
     await this.authService.logout();
+    this.router.navigateByUrl('/', { replaceUrl: true });
   }
 }
