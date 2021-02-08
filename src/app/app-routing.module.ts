@@ -18,14 +18,19 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then((m) => m.HomePageModule),
     canLoad: [AuthGuard],
+    canActivateChild: [AuthGuard]
   },
   {
     path: 'parameters',
     loadChildren: () => import('./pages/parameters/parameters.module').then((m) => m.ParametersPageModule),
+    canLoad: [AuthGuard],
+    canActivateChild: [AuthGuard]
   },
   {
     path: 'units',
     loadChildren: () => import('./pages/units/units.module').then((m) => m.UnitsPageModule),
+    canLoad: [AuthGuard],
+    canActivateChild: [AuthGuard]
   },
 ];
 

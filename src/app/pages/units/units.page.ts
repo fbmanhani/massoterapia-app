@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { Unit } from 'src/app/core/models/unit';
@@ -9,12 +9,12 @@ import { UnitService } from 'src/app/services/unit.service';
   templateUrl: './units.page.html',
   styleUrls: ['./units.page.scss'],
 })
-export class UnitsPage implements OnInit {
+export class UnitsPage {
   units: Array<Unit>;
 
   constructor(private unitService: UnitService, private loadingController: LoadingController, private router: Router) {}
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.loadUnits();
   }
 
@@ -35,7 +35,7 @@ export class UnitsPage implements OnInit {
   }
 
   add() {
-    this.router.navigate(['/units/register'], { replaceUrl: true });
+    this.router.navigate(['/units/register'], { replaceUrl: true, state: null });
   }
 
   edit(unit: Unit) {
