@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
       title: 'Relatórios',
       url: '/report',
       icon: 'stats-chart',
-    }
+    },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
@@ -57,14 +57,16 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     const path = window.location.pathname.split('folder/')[1];
     if (path !== undefined) {
-      this.selectedIndex = this.appPages.findIndex(
-        (page) => page.title.toLowerCase() === path.toLowerCase()
-      );
+      this.selectedIndex = this.appPages.findIndex((page) => page.title.toLowerCase() === path.toLowerCase());
     }
   }
 
   async logout() {
     await this.authService.logout();
     this.router.navigateByUrl('/', { replaceUrl: true });
+  }
+
+  get username() {
+    return this.authService.getUsername();
   }
 }

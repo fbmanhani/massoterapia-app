@@ -4,6 +4,11 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>{{isEdit? 'Editar' : 'Cadastrar' }} Unidade</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="save()" [disabled]="!form.valid">
+        <ion-icon slot="icon-only" name="save"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -29,11 +34,11 @@
       <span *ngIf="posicoes.errors?.maxlength">O campo pode ter no máximo 6 caracteres</span>
     </div>
 
-    <ion-row>
+    <!-- <ion-row>
       <ion-col>
-        <ion-button type="submit" expand="block" >Salvar</ion-button>
+        <ion-button type="submit" expand="block" [disabled]="!form.valid">Salvar</ion-button>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
   </form>
 
 </ion-content>

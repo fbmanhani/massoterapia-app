@@ -19,7 +19,6 @@ export class AuthGuard implements CanLoad, CanActivateChild {
       filter((val) => val !== null),
       take(1),
       map((isAuthenticated) => {
-        console.log('GUARD: ', isAuthenticated);
         if (isAuthenticated) {
           this.menuCtrl.enable(true);
           return true;
@@ -37,7 +36,6 @@ export class AuthGuard implements CanLoad, CanActivateChild {
       filter((val) => val !== null),
       take(1),
       map((isAuthenticated) => {
-        console.log('GUARD: ', isAuthenticated);
         if (isAuthenticated) {
           this.menuCtrl.enable(true);
           return true;

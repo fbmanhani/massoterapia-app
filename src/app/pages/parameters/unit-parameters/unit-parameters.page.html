@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Posições de {{unit.descricao}}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="save()">
+        <ion-icon slot="icon-only" name="save"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list *ngIf="users && users.length">
+    <ion-item *ngFor="let pos of positions">
+      <ion-label>Posição {{pos.number}}</ion-label>
+      <ion-select placeholder="Selecione" [(ngModel)]="pos.employee" [compareWith]="compareWith" cancelText="Cancelar"
+        (ionChange)="selectionChange($event.detail.value, pos)">
+        <ion-select-option [value]="null">Vazio</ion-select-option>
+        <ion-select-option *ngFor="let user of users" [value]="user">{{user.fullname}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+</ion-content>

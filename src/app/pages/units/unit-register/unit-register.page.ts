@@ -22,17 +22,15 @@ export class UnitRegisterPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('ngOnInit');
     const unit = this.router.getCurrentNavigation().extras.state;
+    if (unit) {
+      this.isEdit = true;
+    }
     this.form = this.fb.group({
       id: [unit?.id],
       descricao: [unit?.descricao, [Validators.required, Validators.maxLength(100)]],
       posicoes: [unit?.posicoes, [Validators.required, Validators.maxLength(6)]],
     });
-  }
-
-  ionViewWillEnter() {
-    console.log('ionViewWillEnter');
   }
 
   async save() {

@@ -1,18 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Parameters } from '../core/models/parameters';
+import { User } from '../core/models/user';
 import { BaseService } from '../core/services/base.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ParametersService extends BaseService<Parameters, string> {
+export class LdapService extends BaseService<User, number> {
   constructor(http: HttpClient) {
-    super('parametrizacao', http);
+    super('ldap', http);
   }
 
-  findByUnidade(id: string): Observable<Parameters> {
-    return this.get(`/unidade/${id}`);
+  public getAllUsers(): Observable<Array<User>> {
+    return this.http.get<Array<User>>(this.base + '/users');
   }
 }

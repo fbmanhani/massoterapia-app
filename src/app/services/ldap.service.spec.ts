@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ParametersService } from './parameters.service';
+import { LdapService } from './ldap.service';
 
-describe('ParametersService', () => {
-  let service: ParametersService;
+describe('LdapService', () => {
+  let service: LdapService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ParametersService);
+    service = TestBed.inject(LdapService);
   });
 
   it('should be created', () => {

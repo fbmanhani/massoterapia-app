@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { Plugins } from '@capacitor/core';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -7,25 +8,23 @@ import { User } from '../models/user';
 import { BaseService } from './base.service';
 
 const { Storage } = Plugins;
-const TOKEN_KEY = 'token';
-
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService extends BaseService<any, number> {
+  static TOKEN_KEY = 'token';
   isAuthenticated = new BehaviorSubject(false);
   currentToken = new BehaviorSubject(null);
   token = '';
 
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient, private jwtHelper: JwtHelperService) {
     super('auth', http);
     this.loadToken();
   }
 
   async loadToken() {
-    const token = await Storage.get({ key: TOKEN_KEY });
-    if (token && token.value) {
-      console.log('set token: ', token.value);
+    const token = await Storage.get({ key: AuthService.TOKEN_KEY });
+    if (token && token.value && !this.jwtHelper.isTokenExpired(token.value)) {
       this.token = token.value;
       this.isAuthenticated.next(true);
       this.currentToken.next(token.value);
@@ -39,8 +38,9 @@ export class AuthService extends BaseService<any, number> {
     return this.post(user, '/login').pipe(
       map((data: any) => data.accessToken),
       switchMap((token) => {
+        console.log(this.jwtHelper.decodeToken(token));
         this.currentToken.next(token);
-        return from(Storage.set({ key: TOKEN_KEY, value: token }));
+        return from(Storage.set({ key: AuthService.TOKEN_KEY, value: token }));
       }),
       tap((_) => {
         this.isAuthenticated.next(true);
@@ -51,10 +51,17 @@ export class AuthService extends BaseService<any, number> {
   logout(): Promise<void> {
     this.isAuthenticated.next(false);
     this.currentToken.next(null);
-    return Storage.remove({ key: TOKEN_KEY });
+    return Storage.remove({ key: AuthService.TOKEN_KEY });
   }
 
   getToken() {
     return this.currentToken.value;
+  }
+
+  getUsername() {
+    if (this.isAuthenticated.value) {
+      return this.jwtHelper.decodeToken(this.getToken()).sub;
+    }
+    return;
   }
 }

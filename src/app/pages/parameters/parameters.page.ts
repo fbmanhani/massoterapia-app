@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Parameters } from 'src/app/core/models/parameters';
+import { Router } from '@angular/router';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { Unit } from 'src/app/core/models/unit';
-import { ParametersService } from 'src/app/services/parameters.service';
 import { UnitService } from 'src/app/services/unit.service';
 
 @Component({
@@ -10,16 +10,46 @@ import { UnitService } from 'src/app/services/unit.service';
   styleUrls: ['./parameters.page.scss'],
 })
 export class ParametersPage implements OnInit {
-  constructor(private unitService: UnitService, private paramsService: ParametersService) {}
+  constructor(
+    private router: Router,
+    private loadingController: LoadingController,
+    private alertController: AlertController,
+    private unitService: UnitService
+  ) {}
 
-  private units = new Array<Unit>();
-  private parameters = new Array<Parameters>();
+  units: Array<Unit>;
 
   ngOnInit() {
     this.loadUnits();
   }
 
   async loadUnits() {
-    this.units = await this.unitService.findAll();
+    const loading = await this.loadingController.create();
+    await loading.present();
+    this.unitService.findAll().subscribe(
+      async (res: Array<Unit>) => {
+        if (res) {
+          this.units = res;
+        }
+        await loading.dismiss();
+      },
+      async () => {
+        await loading.dismiss();
+        this.alertController.create({
+          header: 'Erro',
+          message: 'Erro ao recuperar as unidades',
+          buttons: [
+            {
+              text: 'OK',
+              role: 'cancel',
+            },
+          ],
+        });
+      }
+    );
+  }
+
+  config(unit: Unit) {
+    this.router.navigate(['/parameters/unit'], { replaceUrl: true, state: unit });
   }
 }
