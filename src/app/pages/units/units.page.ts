@@ -35,10 +35,14 @@ export class UnitsPage {
   }
 
   add() {
-    this.router.navigate(['/units/register'], { replaceUrl: true, state: null });
+    this.router.navigate(['/unit/register'], { replaceUrl: true, state: null });
   }
 
   edit(unit: Unit) {
-    this.router.navigate(['/units/register'], { replaceUrl: true, state: unit });
+    this.router.navigate(['/unit/register'], { replaceUrl: true, state: unit });
+  }
+
+  positions(unit: Unit) {
+    this.router.navigate(['/unit/positions'], { replaceUrl: true, state: unit });
   }
 }

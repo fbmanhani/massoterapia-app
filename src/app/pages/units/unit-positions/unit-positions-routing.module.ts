@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
-import { UnitParametersPage } from './unit-parameters.page';
+import { RouterModule, Routes } from '@angular/router';
+import { UnitPositionsPage } from './unit-positions.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: UnitParametersPage
-  }
+    component: UnitPositionsPage,
+  },
 ];
 
 @NgModule({

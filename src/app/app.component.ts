@@ -21,11 +21,11 @@ export class AppComponent implements OnInit {
     },
     {
       title: 'Unidades',
-      url: '/units',
+      url: '/unit',
       icon: 'business',
     },
     {
-      title: 'Posições',
+      title: 'Parâmetros',
       url: '/parameters',
       icon: 'body',
     },

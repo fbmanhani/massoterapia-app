@@ -9,9 +9,12 @@ const routes: Routes = [
   },
   {
     path: 'register',
-    loadChildren: () => import('./unit-register/unit-register.module').then( m => m.UnitRegisterPageModule)
+    loadChildren: () => import('./unit-register/unit-register.module').then((m) => m.UnitRegisterPageModule),
   },
-
+  {
+    path: 'positions',
+    loadChildren: () => import('./unit-positions/unit-positions.module').then((m) => m.UnitParametersPageModule),
+  },
 ];
 
 @NgModule({

@@ -8,11 +8,11 @@ import { LdapService } from 'src/app/services/ldap.service';
 import { PositionService } from 'src/app/services/position.service';
 
 @Component({
-  selector: 'app-unit-parameters',
-  templateUrl: './unit-parameters.page.html',
-  styleUrls: ['./unit-parameters.page.scss'],
+  selector: 'app-unit-positions',
+  templateUrl: './unit-positions.page.html',
+  styleUrls: ['./unit-positions.page.scss'],
 })
-export class UnitParametersPage implements OnInit {
+export class UnitPositionsPage implements OnInit {
   constructor(
     private router: Router,
     private loadingController: LoadingController,
@@ -76,7 +76,7 @@ export class UnitParametersPage implements OnInit {
               text: 'OK',
               role: 'cancel',
               handler: () => {
-                this.router.navigate(['/parameters'], { replaceUrl: true });
+                this.router.navigate(['/unit'], { replaceUrl: true });
               },
             },
           ],
