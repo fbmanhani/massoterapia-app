@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
     {
       title: 'Parâmetros',
       url: '/parameters',
-      icon: 'body',
+      icon: 'settings',
     },
     {
       title: 'Relatórios',

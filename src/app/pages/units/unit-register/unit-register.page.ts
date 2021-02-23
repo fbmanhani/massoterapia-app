@@ -57,7 +57,7 @@ export class UnitRegisterPage implements OnInit {
                   text: 'OK',
                   role: 'cancel',
                   handler: () => {
-                    this.router.navigate(['/units'], { replaceUrl: true });
+                    this.router.navigate(['/unit'], { replaceUrl: true });
                   },
                 },
               ],

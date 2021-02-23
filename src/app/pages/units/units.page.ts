@@ -22,13 +22,13 @@ export class UnitsPage {
     const loading = await this.loadingController.create();
     await loading.present();
     this.unitService.findAll().subscribe(
-      async (res) => {
+      async (res: Unit[]) => {
         if (res) {
           this.units = res;
         }
         await loading.dismiss();
       },
-      async (err) => {
+      async () => {
         await loading.dismiss();
       }
     );

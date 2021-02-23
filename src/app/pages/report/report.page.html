@@ -1,0 +1,42 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Relatório de Sessões
+    </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="search()" [disabled]="!form.valid">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+
+  <form [formGroup]="form">
+    <ion-item-divider>
+      <ion-label>
+        Filtro
+      </ion-label>
+    </ion-item-divider>
+    <ion-item>
+      <ion-label position="floating">Unidade</ion-label>
+      <ion-select placeholder="Selecione" cancelText="Cancelar" formControlName="unitId">
+        <ion-select-option *ngFor="let unit of units" [value]="unit.id">{{unit.descricao}}</ion-select-option> -->
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Mês/Ano</ion-label>
+      <ion-datetime displayFormat="MMMM/YYYY" formControlName="date"
+        monthNames="Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro"
+        cancelText="Cancelar" doneText="Selecionar"></ion-datetime>
+    </ion-item>
+  </form>
+
+  <div class="ion-padding">
+    <canvas #chart style="position: relative; height:20vh; width:40vw"></canvas>
+  </div>
+</ion-content>
