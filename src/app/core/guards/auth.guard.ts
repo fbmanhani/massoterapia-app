@@ -20,7 +20,7 @@ export class AuthGuard implements CanLoad, CanActivateChild {
       take(1),
       map((isAuthenticated) => {
         if (isAuthenticated) {
-          this.menuCtrl.enable(true);
+          this.menuCtrl.enable(this.authService.isAdmin());
           return true;
         } else {
           this.menuCtrl.enable(false);
@@ -37,7 +37,7 @@ export class AuthGuard implements CanLoad, CanActivateChild {
       take(1),
       map((isAuthenticated) => {
         if (isAuthenticated) {
-          this.menuCtrl.enable(true);
+          this.menuCtrl.enable(this.authService.isAdmin());
           return true;
         } else {
           this.menuCtrl.enable(false);

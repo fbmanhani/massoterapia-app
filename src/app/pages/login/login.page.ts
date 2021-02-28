@@ -33,9 +33,14 @@ export class LoginPage {
 
     this.authService.login(this.credentials.value).subscribe(
       async () => {
-        this.menuCtrl.enable(true);
+        this.menuCtrl.enable(this.authService.isAdmin());
         await loading.dismiss();
-        this.router.navigateByUrl('/home', { replaceUrl: true });
+
+        if (this.authService.isMassagist()) {
+          this.router.navigateByUrl('/tabs', { replaceUrl: true });
+        } else {
+          this.router.navigateByUrl('/home', { replaceUrl: true });
+        }
       },
       async (error) => {
         await loading.dismiss();

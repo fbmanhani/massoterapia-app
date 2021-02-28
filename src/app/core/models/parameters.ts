@@ -1,6 +1,6 @@
 
 export class Parameters {
   // $key: string;
-  sessionTime: string;
+  sessionTime: number;
   monthlyGoal: number;
 }

@@ -10,4 +10,8 @@ export class UnitService extends BaseService<Unit, string> {
   constructor(http: HttpClient) {
     super('unidade', http);
   }
+
+  getByDescricao(descricao: string) {
+    return this.get(`/${descricao}`);
+  }
 }

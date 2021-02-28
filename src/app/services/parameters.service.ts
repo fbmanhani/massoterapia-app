@@ -9,7 +9,7 @@ export class ParametersService {
   parameterRef: AngularFireObject<any>;
 
   constructor(private db: AngularFireDatabase) {
-    this.parameterRef = db.object('parameters');
+    this.parameterRef = db.object('parametros');
   }
 
   save(params: Parameters) {

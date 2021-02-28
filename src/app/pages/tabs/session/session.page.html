@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button>asdasd</ion-back-button>
+    </ion-buttons>
+    <ion-title>Sessão</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="logout()" primary>
+        Sair
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen *ngIf="!newSession">
+  <div>
+    <ion-toolbar>
+      <ion-title size="small">Logado como: <b>{{username}}</b></ion-title>
+    </ion-toolbar>
+  </div>
+  <div class="xc" style="height: 80%;">
+    <ion-button (click)="createSession()">Nova Sessão</ion-button>
+  </div>
+</ion-content>
+
+<ion-content fullscreen *ngIf="newSession">
+  <ion-grid class="fullheight" style="display: flex; flex-flow: column">
+    <ion-row>
+      <ion-col size="12">
+        <span>Funcionário: <b>{{position.nome}}</b></span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <span>Posição: <b>{{position.posicao}}</b></span>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center ion-align-items-center" style="flex-grow: 1;">
+      <ion-col size="auto">
+        <div class="progressBar">
+          <circle-progress [percent]="percent" [maxPercent]="100" [radius]="radius" [showTitle]="false"
+            [showSubtitle]="true" [subtitle]="remainingTime" [subtitleFontSize]="40" [showUnits]="false"
+            [outerStrokeWidth]="16" [outerStrokeColor]="'#8000FF'" [showZeroOuterStroke]="false"
+            [backgroundStroke]="'#33003F'" [backgroundStrokeWidth]="3" [outerStrokeGradient]="true"
+            [outerStrokeGradientStopColor]="'#FF00CB'" [showInnerStroke]="false">
+          </circle-progress>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-center ion-align-items-bottom">
+      <ion-col size="auto">
+        <ion-button (click)="startTimer()" size="large" *ngIf="!countDownTimer; else running">
+          <ion-icon slot="icon-only" name="play"></ion-icon>
+        </ion-button>
+        <ng-template #running>
+          <ion-button (click)="stopTimer()" size="large">
+            <ion-icon slot="icon-only" name="stop"></ion-icon>
+          </ion-button>
+          <ion-button (click)="pauseTimer()" size="large">
+            <ion-icon slot="icon-only" name="pause"></ion-icon>
+          </ion-button>
+        </ng-template>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

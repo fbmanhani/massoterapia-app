@@ -5,6 +5,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { Insomnia } from '@ionic-native/insomnia/ngx';
+import { NavigationBar } from '@ionic-native/navigation-bar/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -56,6 +58,8 @@ export function jwtOptionsFactory(authService: AuthService) {
       multi: true,
     },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    Insomnia,
+    NavigationBar,
   ],
   bootstrap: [AppComponent],
 })

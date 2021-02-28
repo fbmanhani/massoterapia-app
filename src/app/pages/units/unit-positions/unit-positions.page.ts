@@ -32,8 +32,8 @@ export class UnitPositionsPage implements OnInit {
     await this.loading.present();
     await this.loadUsers();
     await this.loadUnitPositions();
-    await this.loading.dismiss();
     this.initPositions();
+    await this.loading.dismiss();
   }
 
   initPositions() {

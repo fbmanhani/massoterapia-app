@@ -64,4 +64,27 @@ export class AuthService extends BaseService<any, number> {
     }
     return;
   }
+
+  getCity() {
+    if (this.isAuthenticated.value) {
+      return this.jwtHelper.decodeToken(this.getToken()).city;
+    }
+    return;
+  }
+
+  isAdmin() {
+    if (this.isAuthenticated.value) {
+      const roles = this.jwtHelper.decodeToken(this.getToken()).roles;
+      return roles === 'ROLE_ADMINISTRADOR';
+    }
+    return;
+  }
+
+  isMassagist() {
+    if (this.isAuthenticated.value) {
+      const roles = this.jwtHelper.decodeToken(this.getToken()).roles;
+      return roles === 'ROLE_MASSOTERAPEUTA';
+    }
+    return;
+  }
 }
