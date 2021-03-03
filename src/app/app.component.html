@@ -13,13 +13,16 @@
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item lines="none" (click)="logout()" detail="false" [routerLink]="" routerDirection="root">
+              <ion-icon slot="start" ios="log-out-outline" md="log-out-sharp"></ion-icon>
+              <ion-label>Sair</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
         </ion-list>
 
         <ion-list id="labels-list">
-          <ion-item lines="none" (click)="logout();" detail="false">
-            <ion-icon slot="start" ios="log-out-outline" md="log-out-sharp"></ion-icon>
-            <ion-label>Sair</ion-label>
-          </ion-item>
+         
         </ion-list>
       </ion-content>
     </ion-menu>

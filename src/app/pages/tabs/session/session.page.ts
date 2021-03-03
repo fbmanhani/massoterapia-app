@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Insomnia } from '@ionic-native/insomnia/ngx';
 import { NavigationBar } from '@ionic-native/navigation-bar/ngx';
@@ -19,7 +19,7 @@ import { UnitService } from 'src/app/services/unit.service';
   templateUrl: './session.page.html',
   styleUrls: ['./session.page.scss'],
 })
-export class SessionPage implements OnInit {
+export class SessionPage implements OnInit, OnDestroy {
   newSession = false;
   sessionTimeInMinutes: number;
   secondsLeft: number;
@@ -100,14 +100,26 @@ export class SessionPage implements OnInit {
 
   get login() {
     const nome: string = this.authService.getUsername();
-    return nome.slice(nome.indexOf('('), nome.length - 1);
+    return nome.slice(nome.indexOf('(') + 1, nome.length - 1);
   }
 
   async createSession() {
-    if (this.sessionTimeInMinutes) {
+    if (this.sessionTimeInMinutes && this.line) {
       const loading = await this.loadingController.create();
       await loading.present();
-      this.position = this.line.posicoes.shift();
+      this.position = this.line.posicoes.find((i) => !i.ativa);
+      if (!this.position) {
+        const alert = await this.alertController.create({
+          header: 'Alerta',
+          message: 'Todos os funcionários estão sendo atendidos no momento.',
+          buttons: ['Ok'],
+        });
+        await loading.dismiss();
+        await alert.present();
+        return;
+      }
+
+      this.position.ativa = true;
       this.reset();
       this.setRemainingTime();
       this.lineService.update(this.unit.id, this.line.posicoes).then(async () => {
@@ -220,6 +232,10 @@ export class SessionPage implements OnInit {
           posicoes: [],
         };
       }
+
+      const index = this.line.posicoes.findIndex((i) => i.login === this.position.login);
+      this.line.posicoes.splice(index, 1);
+      this.position.ativa = false;
       this.line.posicoes.push(this.position);
       this.lineService.update(this.unit.id, this.line.posicoes).then(async () => {
         this.newSession = false;
@@ -235,8 +251,29 @@ export class SessionPage implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    console.log('ngOnDestroy');
+    this.backToLine();
+  }
+
   ionViewWillLeave() {
     console.log('ionViewWillLeave');
-    return false;
+    this.backToLine();
+  }
+
+  ionViewDidLeave() {
+    console.log('ionViewDidLeave');
+  }
+
+  backToLine() {
+    if (this.line && this.position) {
+      const obj = this.line.posicoes.find((i) => i.login === this.position.login);
+      obj.ativa = false;
+      this.lineService.update(this.unit.id, this.line.posicoes).then(async () => {
+        console.log('line updated');
+        this.position = null;
+        this.newSession = false;
+      });
+    }
   }
 }
