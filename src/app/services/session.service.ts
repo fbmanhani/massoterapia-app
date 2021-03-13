@@ -14,4 +14,8 @@ export class SessionService extends BaseService<Session, string> {
   getSessionsReport(unitId: string, date: string) {
     return this.get(`/${unitId}/${date}`);
   }
+
+  getMassagistSessions(massagistLogin: string, date: string) {
+    return this.get(`/count/${massagistLogin}/${date}`);
+  }
 }

@@ -16,8 +16,10 @@ export class AutoLoginGuard implements CanLoad {
       take(1), // Otherwise the Observable doesn't complete!
       map((isAuthenticated) => {
         if (isAuthenticated) {
-          // Directly open inside area
-          this.router.navigateByUrl('/home', { replaceUrl: true });
+          
+          const path = this.authService.isAdmin() ? '/home' : '/tabs'  
+
+          this.router.navigateByUrl(path, { replaceUrl: true });
         } else {
           // Simply allow access to the login
           return true;

@@ -1,14 +1,72 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Report</ion-title>
+    <ion-title>Relatório Mensal</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        Sair
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
-  <ion-buttons slot="end">
-    <ion-button (click)="logout()">
-      Sair
-    </ion-button>
-  </ion-buttons>
 </ion-header>
 
-<ion-content>
+<ion-content fullscreen [formGroup]="form">
+  <ion-grid>
+    <ion-row class="ion-align-items-center" size="2">
+      <ion-col size="2">
+        <ion-button size="small" (click)="back()">
+          <ion-icon slot="icon-only" ios="chevron-back-outline" md="chevron-back-sharp"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col style="text-align: center; font-size: 1.2em;" size="8">
+        <ion-datetime displayFormat="MMMM/YYYY" formControlName="date"
+          monthNames="Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro"
+          cancelText="Cancelar" doneText="Selecionar" disabled></ion-datetime>
+      </ion-col>
+      <ion-col size="2" style="text-align: right;">
+        <ion-button size="small" [disabled]="isCurrentDate()" (click)="forward()">
+          <ion-icon slot="icon-only" ios="chevron-forward-outline" md="chevron-forward-sharp"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- <ion-item-divider style="text-align: center;">
+    <span class="span">Sessões Executadas</span>
+  </ion-item-divider>
+  <ion-grid>
+    <ion-row class="ion-align-items-center ion-justify-content-center">
+      <span class="span-80">20</span>
+    </ion-row>
+  </ion-grid>
+
+  <ion-item-divider style="text-align: center;">
+    <span style="width: 100%; text-align: center;">Meta Mensal</span>
+  </ion-item-divider>
+  <ion-grid>
+    <ion-row class="ion-align-items-center ion-justify-content-center">
+      <span class="span-80">20</span>
+    </ion-row>
+  </ion-grid> -->
+  <ion-card>
+    <ion-card-header>
+      <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
+      <ion-card-subtitle style="font-size: 1.2em;">Sessões Executadas</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content class="span-80">
+      {{result?.sessions}}
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
+      <ion-card-subtitle style="font-size: 1.2em;">Meta Mensal</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content class="span-80">
+      {{goal}}
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>
