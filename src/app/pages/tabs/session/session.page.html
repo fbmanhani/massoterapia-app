@@ -14,9 +14,16 @@
 
 <ion-content fullscreen *ngIf="!newSession">
   <div>
-    <ion-toolbar>
-      <ion-title size="small">Logado como: <b>{{username}}</b></ion-title>
-    </ion-toolbar>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>
+            <p>Logado como: <b>{{username}}</b></p>
+            <p>Unidade: <b>{{unit?.descricao}}</b></p>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
   </div>
   <div class="xc" style="height: 80%;">
     <ion-button (click)="createSession()">Nova Sessão</ion-button>
@@ -27,12 +34,13 @@
   <ion-grid class="fullheight" style="display: flex; flex-flow: column">
     <ion-row>
       <ion-col size="12">
-        <span>Funcionário: <b>{{position.nome}}</b></span>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12">
-        <span>Posição: <b>{{position.posicao}}</b></span>
+        <ion-item>
+          <ion-label>
+            <p>Funcionário: <b>{{position.nome}}</b></p>
+            <p>Posição: <b>{{position.posicao}}</b></p>
+            <p>Idade: <b>{{position.idade}}</b></p>
+          </ion-label>
+        </ion-item>
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-center ion-align-items-center" style="flex-grow: 1;">
@@ -63,4 +71,5 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
 </ion-content>

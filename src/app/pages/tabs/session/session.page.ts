@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Insomnia } from '@ionic-native/insomnia/ngx';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
 import { NavigationBar } from '@ionic-native/navigation-bar/ngx';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Line } from 'src/app/core/models/line';
@@ -25,6 +27,7 @@ export class SessionPage implements OnInit, OnDestroy {
   secondsLeft: number;
   unit: Unit;
   position: LinePosition;
+  picture: SafeUrl;
 
   progress = 0;
   percent = 0;
@@ -43,10 +46,10 @@ export class SessionPage implements OnInit, OnDestroy {
     private parametersService: ParametersService,
     private lineService: LineService,
     private unitService: UnitService,
-    private sessionService: SessionService
-  ) {
-    //this.navigationBar.setUp(true);
-  }
+    private sessionService: SessionService,
+    private sanitizer: DomSanitizer,
+    private nativeAudio: NativeAudio
+  ) {}
 
   async ngOnInit() {
     const loading = await this.loadingController.create();
@@ -59,16 +62,52 @@ export class SessionPage implements OnInit, OnDestroy {
         this.secondsLeft = this.sessionTimeInMinutes * 60;
       });
 
-    this.unitService.getByDescricao(this.authService.getCity()).subscribe(async (res: Unit) => {
-      this.unit = res;
-      this.lineService
-        .getByKey(this.unit.id)
-        .valueChanges()
-        .subscribe(async (data: Line) => {
-          this.line = data;
-          await loading.dismiss();
+    this.unitService.getByDescricao(this.authService.getCity()).subscribe(
+      async (res: Unit) => {
+        this.unit = res;
+        this.lineService
+          .getByKey(this.unit.id)
+          .valueChanges()
+          .subscribe(async (data: Line) => {
+            this.line = data;
+            await loading.dismiss();
+          });
+      },
+      async (error) => {
+        const alert = await this.alertController.create({
+          header: 'Erro',
+          message: 'A unidade não está cadastrada. Entre em contato com o administrador.',
+          buttons: ['Ok'],
         });
-    });
+        await loading.dismiss();
+        await alert.present();
+        await this.authService.logout();
+        this.router.navigateByUrl('/', { replaceUrl: true });
+      }
+    );
+    this.preloadAudio();
+  }
+
+  preloadAudio() {
+    this.nativeAudio.preloadSimple('short', '../../../../assets/sounds/short-beep.mp3').then(
+      () => console.log('Audio Loaded'),
+      (err) => console.error(err)
+    );
+    this.nativeAudio.preloadSimple('short-double', '../../../../assets/sounds/double-short-beep.mp3').then(
+      () => console.log('Audio Loaded'),
+      (err) => console.error(err)
+    );
+    this.nativeAudio.preloadSimple('long', '../../../../assets/sounds/long-beep.mp3').then(
+      () => console.log('Audio Loaded'),
+      (err) => console.error(err)
+    );
+  }
+
+  playSound(id: string) {
+    this.nativeAudio.play(id).then(
+      () => console.log('Played ok'),
+      (err) => console.error(err)
+    );
   }
 
   async logout() {
@@ -120,6 +159,7 @@ export class SessionPage implements OnInit, OnDestroy {
       }
 
       this.position.ativa = true;
+      this.picture = this.sanitizer.bypassSecurityTrustUrl(this.position.foto);
       this.reset();
       this.setRemainingTime();
       this.lineService.update(this.unit.id, this.line.posicoes).then(async () => {
@@ -138,7 +178,7 @@ export class SessionPage implements OnInit, OnDestroy {
 
   startTimer() {
     this.insomnia.keepAwake();
-
+    this.playSound('short');
     this.secondsLeft = this.secondsLeft || this.sessionTimeInMinutes * 60;
 
     const backwardsTimer = () => {
@@ -148,6 +188,7 @@ export class SessionPage implements OnInit, OnDestroy {
         this.secondsLeft--;
       } else {
         clearInterval(this.countDownTimer);
+        this.playSound('long');
         this.reset();
         this.saveSession();
       }
@@ -185,6 +226,7 @@ export class SessionPage implements OnInit, OnDestroy {
   }
 
   pauseTimer() {
+    this.playSound('short-double');
     clearInterval(this.countDownTimer);
     this.countDownTimer = null;
     this.insomnia.allowSleepAgain();

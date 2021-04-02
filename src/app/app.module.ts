@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { Insomnia } from '@ionic-native/insomnia/ngx';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
 import { NavigationBar } from '@ionic-native/navigation-bar/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -60,6 +61,7 @@ export function jwtOptionsFactory(authService: AuthService) {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Insomnia,
     NavigationBar,
+    NativeAudio,
   ],
   bootstrap: [AppComponent],
 })

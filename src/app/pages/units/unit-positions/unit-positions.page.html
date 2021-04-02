@@ -15,11 +15,18 @@
 <ion-content padding>
   <ion-list *ngIf="users && users.length">
     <ion-item *ngFor="let pos of positions">
-      <ion-label>Posição {{pos.number}}</ion-label>
+      <ion-label position="fixed">Posição {{pos.number}}</ion-label>
       <ion-select placeholder="Selecione" [(ngModel)]="pos.employee" [compareWith]="compareWith" cancelText="Cancelar"
-        (ionChange)="selectionChange($event.detail.value, pos)">
+        (ionChange)="selectionChange($event.detail.value, pos)" slot="end" style="max-width: fit-content;">
         <ion-select-option [value]="null">Vazio</ion-select-option>
-        <ion-select-option *ngFor="let user of users" [value]="user">{{user.fullname}}</ion-select-option>
+        <ion-select-option *ngFor="let user of users" [value]="user">
+          <ion-item>
+            <ion-avatar slot="start">
+              <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+            </ion-avatar>
+            <ion-label>{{user.fullname}}</ion-label>
+          </ion-item>
+        </ion-select-option>
       </ion-select>
     </ion-item>
   </ion-list>

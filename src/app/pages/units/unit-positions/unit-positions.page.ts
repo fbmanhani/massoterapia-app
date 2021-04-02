@@ -96,15 +96,29 @@ export class UnitPositionsPage implements OnInit {
   }
 
   private async loadUsers() {
-    this.ldapService.getAllUsers().subscribe(
+    this.ldapService.getAllUsers(this.unit.descricao).subscribe(
       async (res: Array<User>) => {
         this.users = res;
+        if (res.length === 0) {
+          await this.loading.dismiss();
+          const alert = await this.alertController.create({
+            header: 'Alerta',
+            message: 'Não há usuários cadastrados na unidade',
+            buttons: [
+              {
+                text: 'OK',
+                role: 'cancel',
+              },
+            ],
+          });
+          await alert.present();
+        }
       },
       async () => {
         await this.loading.dismiss();
         const alert = await this.alertController.create({
           header: 'Erro',
-          message: 'Erro ao recuperar as unidades',
+          message: 'Erro ao recuperar os usuários',
           buttons: [
             {
               text: 'OK',

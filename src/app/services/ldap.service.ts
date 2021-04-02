@@ -12,7 +12,7 @@ export class LdapService extends BaseService<User, number> {
     super('ldap', http);
   }
 
-  public getAllUsers(): Observable<Array<User>> {
-    return this.http.get<Array<User>>(this.base + '/users');
+  public getAllUsers(unitDescription: string): Observable<Array<User>> {
+    return this.http.get<Array<User>>(this.base + `/users/${unitDescription}`);
   }
 }
