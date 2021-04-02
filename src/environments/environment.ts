@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8081/massoterapia-api',
+  apiUrl: 'http://192.168.25.146:8081/massoterapia-api',
   firebaseConfig: {
     apiKey: 'AIzaSyAGTTbmctEtrWzbBKDoa_XfjTDOVgaBgOo',
     authDomain: 'massoterapia-3c8d9.firebaseapp.com',

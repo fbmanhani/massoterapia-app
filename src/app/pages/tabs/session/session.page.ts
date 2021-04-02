@@ -1,9 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Insomnia } from '@ionic-native/insomnia/ngx';
-import { NativeAudio } from '@ionic-native/native-audio/ngx';
-import { NavigationBar } from '@ionic-native/navigation-bar/ngx';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Line } from 'src/app/core/models/line';
 import { LinePosition } from 'src/app/core/models/line-position';
@@ -11,6 +8,7 @@ import { Parameters } from 'src/app/core/models/parameters';
 import { Session } from 'src/app/core/models/session';
 import { Unit } from 'src/app/core/models/unit';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { AudioService } from 'src/app/services/audio.service';
 import { LineService } from 'src/app/services/line.service';
 import { ParametersService } from 'src/app/services/parameters.service';
 import { SessionService } from 'src/app/services/session.service';
@@ -21,13 +19,13 @@ import { UnitService } from 'src/app/services/unit.service';
   templateUrl: './session.page.html',
   styleUrls: ['./session.page.scss'],
 })
-export class SessionPage implements OnInit, OnDestroy {
+export class SessionPage implements OnInit, OnDestroy, AfterViewInit {
   newSession = false;
   sessionTimeInMinutes: number;
   secondsLeft: number;
   unit: Unit;
   position: LinePosition;
-  picture: SafeUrl;
+  picture: string;
 
   progress = 0;
   percent = 0;
@@ -42,13 +40,11 @@ export class SessionPage implements OnInit, OnDestroy {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private insomnia: Insomnia,
-    private navigationBar: NavigationBar,
     private parametersService: ParametersService,
     private lineService: LineService,
     private unitService: UnitService,
     private sessionService: SessionService,
-    private sanitizer: DomSanitizer,
-    private nativeAudio: NativeAudio
+    private audio: AudioService
   ) {}
 
   async ngOnInit() {
@@ -85,29 +81,12 @@ export class SessionPage implements OnInit, OnDestroy {
         this.router.navigateByUrl('/', { replaceUrl: true });
       }
     );
-    this.preloadAudio();
   }
 
-  preloadAudio() {
-    this.nativeAudio.preloadSimple('short', '../../../../assets/sounds/short-beep.mp3').then(
-      () => console.log('Audio Loaded'),
-      (err) => console.error(err)
-    );
-    this.nativeAudio.preloadSimple('short-double', '../../../../assets/sounds/double-short-beep.mp3').then(
-      () => console.log('Audio Loaded'),
-      (err) => console.error(err)
-    );
-    this.nativeAudio.preloadSimple('long', '../../../../assets/sounds/long-beep.mp3').then(
-      () => console.log('Audio Loaded'),
-      (err) => console.error(err)
-    );
-  }
-
-  playSound(id: string) {
-    this.nativeAudio.play(id).then(
-      () => console.log('Played ok'),
-      (err) => console.error(err)
-    );
+  ngAfterViewInit() {
+    this.audio.preload('short', 'assets/sounds/short-beep.mp3');
+    this.audio.preload('short-double', 'assets/sounds/double-short-beep.mp3');
+    this.audio.preload('long', 'assets/sounds/long-beep.mp3');
   }
 
   async logout() {
@@ -159,7 +138,7 @@ export class SessionPage implements OnInit, OnDestroy {
       }
 
       this.position.ativa = true;
-      this.picture = this.sanitizer.bypassSecurityTrustUrl(this.position.foto);
+      this.picture = `data:image/png;base64,${this.position.foto}`;
       this.reset();
       this.setRemainingTime();
       this.lineService.update(this.unit.id, this.line.posicoes).then(async () => {
@@ -178,7 +157,7 @@ export class SessionPage implements OnInit, OnDestroy {
 
   startTimer() {
     this.insomnia.keepAwake();
-    this.playSound('short');
+    this.audio.play('short');
     this.secondsLeft = this.secondsLeft || this.sessionTimeInMinutes * 60;
 
     const backwardsTimer = () => {
@@ -188,7 +167,7 @@ export class SessionPage implements OnInit, OnDestroy {
         this.secondsLeft--;
       } else {
         clearInterval(this.countDownTimer);
-        this.playSound('long');
+        this.audio.play('long');
         this.reset();
         this.saveSession();
       }
@@ -226,7 +205,7 @@ export class SessionPage implements OnInit, OnDestroy {
   }
 
   pauseTimer() {
-    this.playSound('short-double');
+    this.audio.play('short-double');
     clearInterval(this.countDownTimer);
     this.countDownTimer = null;
     this.insomnia.allowSleepAgain();
@@ -263,8 +242,7 @@ export class SessionPage implements OnInit, OnDestroy {
         username: this.position.login,
       },
       massagist: {
-        login: this.login,
-        name: this.username,
+        username: this.login
       },
     };
 
@@ -295,11 +273,13 @@ export class SessionPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('ngOnDestroy');
+    this.reset();
     this.backToLine();
   }
 
   ionViewWillLeave() {
     console.log('ionViewWillLeave');
+    this.reset();
     this.backToLine();
   }
 
