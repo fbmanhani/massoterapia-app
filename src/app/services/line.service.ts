@@ -8,7 +8,7 @@ export class LineService {
   lineRef: AngularFireList<any>;
 
   constructor(private db: AngularFireDatabase) {
-    this.lineRef = db.list('fila');
+    this.lineRef = db.list('filas');
   }
 
   update(key: string, value: any): Promise<void> {
@@ -16,6 +16,6 @@ export class LineService {
   }
 
   getByKey(key: string) {
-    return this.db.object(`fila/${key}`);
+    return this.db.object(`filas/${key}`);
   }
 }

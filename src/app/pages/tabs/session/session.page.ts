@@ -21,7 +21,7 @@ import { UnitService } from 'src/app/services/unit.service';
 })
 export class SessionPage implements OnInit, OnDestroy, AfterViewInit {
   newSession = false;
-  sessionTimeInMinutes: number;
+  tempoSessaoInMinutes: number;
   secondsLeft: number;
   unit: Unit;
   position: LinePosition;
@@ -54,8 +54,8 @@ export class SessionPage implements OnInit, OnDestroy, AfterViewInit {
       .get()
       .valueChanges()
       .subscribe(async (res: Parameters) => {
-        this.sessionTimeInMinutes = res?.sessionTime;
-        this.secondsLeft = this.sessionTimeInMinutes * 60;
+        this.tempoSessaoInMinutes = res?.tempoSessao;
+        this.secondsLeft = this.tempoSessaoInMinutes * 60;
       });
 
     this.unitService.getByDescricao(this.authService.getCity()).subscribe(
@@ -122,7 +122,7 @@ export class SessionPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async createSession() {
-    if (this.sessionTimeInMinutes && this.line) {
+    if (this.tempoSessaoInMinutes && this.line) {
       const loading = await this.loadingController.create();
       await loading.present();
       this.position = this.line.posicoes.find((i) => !i.ativa);
@@ -158,12 +158,12 @@ export class SessionPage implements OnInit, OnDestroy, AfterViewInit {
   startTimer() {
     this.insomnia.keepAwake();
     this.audio.play('short');
-    this.secondsLeft = this.secondsLeft || this.sessionTimeInMinutes * 60;
+    this.secondsLeft = this.secondsLeft || this.tempoSessaoInMinutes * 60;
 
     const backwardsTimer = () => {
       if (this.secondsLeft >= 0) {
         this.setRemainingTime();
-        this.percent = 100 - (this.secondsLeft / (this.sessionTimeInMinutes * 60)) * 100;
+        this.percent = 100 - (this.secondsLeft / (this.tempoSessaoInMinutes * 60)) * 100;
         this.secondsLeft--;
       } else {
         clearInterval(this.countDownTimer);
@@ -230,7 +230,7 @@ export class SessionPage implements OnInit, OnDestroy, AfterViewInit {
     this.percent = 0;
     this.radius = 100;
     this.countDownTimer = null;
-    this.secondsLeft = this.sessionTimeInMinutes * 60;
+    this.secondsLeft = this.tempoSessaoInMinutes * 60;
   }
 
   async saveSession() {

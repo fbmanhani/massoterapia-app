@@ -21,8 +21,8 @@ export class ParametersPage implements OnInit {
 
   async ngOnInit() {
     this.form = this.fb.group({
-      sessionTime: [null, [Validators.required]],
-      monthlyGoal: [null, [Validators.required]],
+      tempoSessao: [null, [Validators.required]],
+      metaMensal: [null, [Validators.required]],
     });
     const loading = await this.loadingController.create();
     await loading.present();
@@ -30,8 +30,8 @@ export class ParametersPage implements OnInit {
       .get()
       .valueChanges()
       .subscribe(async (res: Parameters) => {
-        this.sessionTime.setValue(res?.sessionTime);
-        this.monthlyGoal.setValue(res?.monthlyGoal);
+        this.tempoSessao.setValue(res?.tempoSessao);
+        this.metaMensal.setValue(res?.metaMensal);
         await loading.dismiss();
       });
   }
@@ -68,11 +68,11 @@ export class ParametersPage implements OnInit {
     }
   }
 
-  get sessionTime() {
-    return this.form.get('sessionTime');
+  get tempoSessao() {
+    return this.form.get('tempoSessao');
   }
 
-  get monthlyGoal() {
-    return this.form.get('monthlyGoal');
+  get metaMensal() {
+    return this.form.get('metaMensal');
   }
 }

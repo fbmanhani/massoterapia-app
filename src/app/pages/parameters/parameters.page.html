@@ -17,17 +17,17 @@
   <form [formGroup]="form" (ngSubmit)="save()" *ngIf="form">
     <ion-item lines="full">
       <ion-label position="floating">Tempo de sessão (minutos)</ion-label>
-      <ion-input formControlName="sessionTime" type="number"></ion-input>
+      <ion-input formControlName="tempoSessao" type="number"></ion-input>
     </ion-item>
-    <div *ngIf="(sessionTime.dirty || sessionTime.touched) && sessionTime.errors" class="errors">
-      <span *ngIf="sessionTime.errors?.required">O tempo de sessão é obrigatório</span>
+    <div *ngIf="(tempoSessao.dirty || tempoSessao.touched) && tempoSessao.errors" class="errors">
+      <span *ngIf="tempoSessao.errors?.required">O tempo de sessão é obrigatório</span>
     </div>
     <ion-item lines="full">
       <ion-label position="floating">Meta mensal de atendimentos</ion-label>
-      <ion-input formControlName="monthlyGoal" type="number"></ion-input>
+      <ion-input formControlName="metaMensal" type="number"></ion-input>
     </ion-item>
-    <div *ngIf="(monthlyGoal.dirty || monthlyGoal.touched) && monthlyGoal.errors" class="errors">
-      <span *ngIf="monthlyGoal.errors?.required">A meta de atendimentos é obrigatória</span>
+    <div *ngIf="(metaMensal.dirty || metaMensal.touched) && metaMensal.errors" class="errors">
+      <span *ngIf="metaMensal.errors?.required">A meta de atendimentos é obrigatória</span>
     </div>
   </form>
 

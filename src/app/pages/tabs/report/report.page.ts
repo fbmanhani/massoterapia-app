@@ -37,7 +37,7 @@ export class ReportPage implements AfterViewInit {
       .get()
       .valueChanges()
       .subscribe(async (res: Parameters) => {
-        this.goal = res?.monthlyGoal;
+        this.goal = res?.metaMensal;
       });
     this.search();
   }
