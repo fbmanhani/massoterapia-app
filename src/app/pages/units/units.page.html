@@ -11,7 +11,7 @@
   <ion-list>
     <ion-item-sliding *ngFor="let unit of units">
       <ion-item>
-        <ion-label>{{unit.descricao}} ({{unit.posicoes}})</ion-label>
+        <ion-label>{{unit.descricao}} ({{unit.posicoes + ' posições'}})</ion-label>
       </ion-item>
       <ion-item-options side="end">
         <ion-item-option (click)="positions(unit)" color="secondary">Posições</ion-item-option>

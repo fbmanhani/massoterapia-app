@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
@@ -13,7 +13,7 @@ import { SessionService } from 'src/app/services/session.service';
   templateUrl: './report.page.html',
   styleUrls: ['./report.page.scss'],
 })
-export class ReportPage implements AfterViewInit {
+export class ReportPage {
   form: FormGroup;
   result: Report;
   goal: number;
@@ -32,7 +32,7 @@ export class ReportPage implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
+  ionViewDidEnter() {
     this.parametersService
       .get()
       .valueChanges()
@@ -59,8 +59,25 @@ export class ReportPage implements AfterViewInit {
   }
 
   async logout() {
-    await this.authService.logout();
-    this.router.navigateByUrl('/', { replaceUrl: true });
+    const alert = await this.alertController.create({
+      header: 'Alerta',
+      message: 'Deseja realmente sair do aplicativo?',
+      buttons: [
+        {
+          text: 'Sim',
+          role: 'primary',
+          handler: async () => {
+            await this.authService.logout();
+            this.router.navigateByUrl('/', { replaceUrl: true });
+          },
+        },
+        {
+          text: 'Não',
+          role: 'cancel',
+        },
+      ],
+    });
+    await alert.present();
   }
 
   get isMassagist() {

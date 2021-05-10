@@ -1,8 +1,9 @@
 <ion-content padding>
   <form (ngSubmit)="login()" [formGroup]="credentials">
     <div class="input-group fullheight xc">
-
+      <h1 hidden>Página de autenticação</h1>
       <ion-item>
+        <ion-label hidden>Usuário</ion-label>
         <ion-input type="username" placeholder="Usuário" formControlName="username"></ion-input>
       </ion-item>
       <div *ngIf="(username.dirty || username.touched) && username.errors" class="errors">
@@ -10,6 +11,7 @@
       </div>
 
       <ion-item>
+        <ion-label hidden>Senha</ion-label>
         <ion-input type="password" placeholder="Senha" formControlName="password"></ion-input>
       </ion-item>
       <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">

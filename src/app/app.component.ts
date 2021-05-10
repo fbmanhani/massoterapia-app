@@ -1,8 +1,9 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Platform } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 import { AuthService } from './core/services/auth.service';
 
 @Component({
@@ -42,7 +43,9 @@ export class AppComponent implements OnInit {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private location: Location,
+    private alertController: AlertController
   ) {
     this.initializeApp();
   }
@@ -51,6 +54,39 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+    });
+
+    this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
+      console.log('Back press handler!');
+      if (
+        this.location.isCurrentPathEqualTo('/home') ||
+        this.location.isCurrentPathEqualTo('/login') ||
+        this.location.isCurrentPathEqualTo('/tabs/session') ||
+        this.location.isCurrentPathEqualTo('/tabs/report')
+      ) {
+        // Show Exit Alert!
+        console.log('Show Exit Alert!');
+        this.showExitConfirm();
+        processNextHandler();
+      } else {
+        // Navigate to back page
+        console.log('Navigate to back page');
+        this.location.back();
+      }
+    });
+
+    this.platform.backButton.subscribeWithPriority(5, () => {
+      console.log('Handler called to force close!');
+      this.alertController
+        .getTop()
+        .then((r) => {
+          if (r) {
+            navigator['app'].exitApp();
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     });
   }
 
@@ -68,5 +104,32 @@ export class AppComponent implements OnInit {
 
   get username() {
     return this.authService.getUsername();
+  }
+
+  showExitConfirm() {
+    this.alertController
+      .create({
+        header: 'Alerta',
+        message: 'Deseja realmente fechar o aplicativo?',
+        backdropDismiss: false,
+        buttons: [
+          {
+            text: 'Sim',
+            handler: () => {
+              navigator['app'].exitApp();
+            },
+          },
+          {
+            text: 'Não',
+            role: 'cancel',
+            handler: () => {
+              console.log('Application exit prevented!');
+            },
+          },
+        ],
+      })
+      .then((alert) => {
+        alert.present();
+      });
   }
 }
